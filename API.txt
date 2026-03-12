@@ -1,0 +1,33 @@
+function doGet(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  
+  if (e.parameter.acao === 'add') {
+    const nomeEquipe = e.parameter.equipe;
+    const pontosAdd = parseInt(e.parameter.pontos);
+    const data = sheet.getDataRange().getValues();
+    
+    for (let i = 1; i < data.length; i++) {
+      if (data[i][0] === nomeEquipe) {
+        let pontosAtuais = parseInt(data[i][1]) || 0;
+        sheet.getRange(i + 1, 2).setValue(pontosAtuais + pontosAdd);
+        break;
+      }
+    }
+    return ContentService.createTextOutput(JSON.stringify({status: "ok"})).setMimeType(ContentService.MimeType.JSON);
+  }
+  
+ 
+  const data = sheet.getDataRange().getValues();
+  let equipes = [];
+  
+  for (let i = 1; i < data.length; i++) {
+    if(data[i][0]) { 
+      equipes.push({
+        nome: data[i][0],
+        pontos: parseInt(data[i][1]) || 0
+      });
+    }
+  }
+  
+  return ContentService.createTextOutput(JSON.stringify(equipes)).setMimeType(ContentService.MimeType.JSON);
