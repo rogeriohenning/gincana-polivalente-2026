@@ -38,7 +38,7 @@ h2 { font-size: 1.1rem; color: #cbd5e1; font-weight: 600; text-shadow: 0 2px 4px
 .prazo-box { background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); padding: 10px 25px; border-radius: 15px; border: 2px solid #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.5); font-size: 1.2rem; text-align: right; line-height: 1.2; }
 .prazo-dias { color: var(--accent); font-weight: 800; font-size: 1.6rem; text-shadow: 0 0 10px rgba(255,215,0,0.8);}
 
-
+/* ÁREA PRINCIPAL */
 .dashboard { display: flex; flex-direction: column; align-items: center; width: 100%; }
 
 
@@ -65,7 +65,6 @@ h2 { font-size: 1.1rem; color: #cbd5e1; font-weight: 600; text-shadow: 0 2px 4px
 
 .trofeu-icon { display: flex; justify-content: center; align-items: center; flex-grow: 1; z-index: 10; margin-bottom: 5px;}
 .trofeu-realista { height: 85px; width: auto; object-fit: contain; filter: drop-shadow(0px 8px 8px rgba(0,0,0,0.8)); transition: transform 0.3s ease; }
-
 
 .coroa-lider {
     position: absolute; top: -55px; left: 50%; transform: translateX(-50%);
@@ -101,7 +100,7 @@ h2 { font-size: 1.1rem; color: #cbd5e1; font-weight: 600; text-shadow: 0 2px 4px
 
 .escudo-svg { height: 28px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)); }
 
-.update-msg { font-size: 0.85rem; color: var(--text-muted); opacity: 0.6; margin-top: 25px; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.8);}
+.update-msg { font-size: 0.85rem; color: var(--text-muted); opacity: 0.6; margin-top: 25px; margin-bottom: 25px; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.8); text-align: center;}
 
 
 .shimmer-wrapper { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; pointer-events: none; z-index: 1; }
@@ -123,44 +122,56 @@ h2 { font-size: 1.1rem; color: #cbd5e1; font-weight: 600; text-shadow: 0 2px 4px
 
 
 @media (max-width: 900px) {
-   
-    .top-bar { flex-direction: column; gap: 15px; padding: 15px 10px; margin-bottom: 20px; text-align: center; }
-    .top-left, .top-right { justify-content: center; width: 100%; }
-    .prazo-box { text-align: center; }
-    h1 { font-size: 1.8rem; }
-    h2 { font-size: 0.95rem; }
-
     
+    .top-bar { flex-direction: column; gap: 10px; padding: 10px; margin-bottom: 10px; text-align: center; }
+    .top-left, .top-right { justify-content: center; width: 100%; }
+    .logo-escola { width: 60px; } 
+    h1 { font-size: 1.5rem; margin-bottom: 5px; } 
+    h2 { font-size: 0.85rem; padding: 0 10px; }
+    .prazo-box { font-size: 1rem; padding: 8px 15px; text-align: center; }
+    .prazo-dias { font-size: 1.3rem; }
+
+   
     .podio-layout { 
         flex-direction: column; 
         align-items: center; 
-        gap: 45px; 
-        margin-top: 40px;
+        gap: 40px; 
+        margin-top: 30px;
     }
     
-   
-    .card-podio.primeiro { order: 1; }
+    .card-podio.primeiro { order: 1; transform: scale(1); animation: none; }
     .card-podio.segundo  { order: 2; }
     .card-podio.terceiro { order: 3; }
 
-   
     .card-podio { 
         width: 90vw !important; 
-        max-width: 380px; 
+        max-width: 340px; 
         height: auto !important; 
-        padding-bottom: 70px !important; 
+        padding: 20px 15px 65px 15px !important; 
     }
-    .card-podio.primeiro { animation: none; transform: scale(1.02); }
-
-    .coroa-lider { top: -45px; font-size: 3.5rem; }
-
-  
-    .ranking-list { max-width: 380px; width: 90vw; }
-    .card-linha { padding: 15px 20px 30px 20px; height: auto; }
-    .linha-pos { width: 40px; font-size: 1.5rem; }
-    .linha-nome { font-size: 1.2rem; }
-    .linha-pontos { font-size: 1.8rem; }
 
    
-    .barra-container-podio, .barra-container-linha { width: 85%; max-width: 100%; }
+    .coroa-lider { font-size: 3rem; top: -40px; }
+    .pos-numero { font-size: 2.2rem; }
+    .linha-nome { font-size: 1.2rem; }
+    .pontos-podio { font-size: 2.8rem; }
+    .trofeu-realista { height: 65px; } 
+    .escudo-svg { height: 22px; }
+    .on-fire { font-size: 1.2rem; }
+
+    /* LISTA MOBILE - Mais compacta */
+    .ranking-list { width: 90vw; max-width: 340px; }
+    .card-linha { 
+        height: auto; 
+        padding: 15px 15px 25px 15px; 
+        flex-direction: row; 
+    }
+    .linha-info-esq { gap: 10px; }
+    .linha-pos { width: 35px; font-size: 1.4rem; }
+    .linha-nome { font-size: 1.1rem; gap: 5px; }
+    .linha-pontos { font-size: 1.6rem; }
+
+    
+    .barra-container-podio { bottom: 15px; max-width: 85%; }
+    .barra-container-linha { bottom: 8px; max-width: 85%; }
 }
