@@ -11,7 +11,7 @@ const imagensTrofeus = [ null, "img/ouro.png", "img/prata.png", "img/bronze.png"
 
 let historicoPontos = {};
 let historicoPosicao = {};
-let onFireTracker = {}; // Controla quanto tempo a chama fica acesa
+let onFireTracker = {}; 
 let primeiraCarga = true; 
 
 function calcularPrazo() {
@@ -79,12 +79,12 @@ function processarAnimacao(e, pos) {
     let oldPos = historicoPosicao[e.nome] || pos;
     let mudou = (oldPts !== e.pontos || oldPos !== pos);
     
-    // Dispara Confetes
+  
     if (!primeiraCarga && ((oldPos > 1 && pos === 1) || (oldPos > pos && pos <= 3))) {
         explodirConfetes(CORES_EQUIPES[e.nome] || '#ffffff');
     }
 
-    // Lógica do "ON FIRE" (A Arder)
+   
     if (!primeiraCarga && e.pontos > oldPts) {
         onFireTracker[e.nome] = 4; // Fica a arder durante 4 ciclos (8 segundos)
     } else {
@@ -149,9 +149,9 @@ function renderCardPodio(e, pos, max, delay) {
     const entraClass = primeiraCarga ? "entra-card" : "";
     const delayStyle = primeiraCarga ? `animation-delay: ${delay}s;` : "";
     
-    // A COROA MÁGICA 👑
+    
     const coroaHTML = pos === 1 ? `<div class="coroa-lider">👑</div>` : "";
-    // O EFEITO ON FIRE 🔥
+   
     const fireHTML = anim.isOnFire ? `<span class="on-fire" title="ON FIRE!">🔥</span>` : "";
 
     return `
