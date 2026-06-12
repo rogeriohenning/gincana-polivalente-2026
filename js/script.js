@@ -5,9 +5,39 @@ let primeiraCarga = true;
 let liderAnterior = null;
 let apiOnline = true;
 
+function isCompactView() {
+    return window.matchMedia("(max-width: 1024px)").matches;
+}
+
+function isMobileView() {
+    return window.matchMedia("(max-width: 768px)").matches;
+}
+
+function atualizarModoLayout() {
+    document.body.classList.toggle("modo-compact", isCompactView());
+    document.body.classList.toggle("modo-mobile", isMobileView());
+}
+
 function mostrarSkeleton() {
     const podioDiv = document.getElementById("podio-container");
+    const listaDiv = document.getElementById("ranking");
     if (!podioDiv || !primeiraCarga) return;
+
+    if (isCompactView()) {
+        podioDiv.innerHTML = `
+            <div class="mobile-podio-skeleton">
+                <div class="skeleton-mobile-card rank-2"></div>
+                <div class="skeleton-mobile-card rank-1"></div>
+                <div class="skeleton-mobile-card rank-3"></div>
+            </div>`;
+        if (listaDiv) {
+            listaDiv.innerHTML = Array.from({ length: 3 }, () =>
+                `<div class="card-linha skeleton-linha"></div>`
+            ).join("");
+        }
+        return;
+    }
+
     podioDiv.innerHTML = `
         <div class="skeleton-podio">
             <div class="skeleton-card"></div>
@@ -72,7 +102,7 @@ function calcularBarra(pontos, maxPontuacao) {
 }
 
 function animarNumeros() {
-    document.querySelectorAll(".pontos-podio, .linha-pontos").forEach(el => {
+    document.querySelectorAll(".pontos-podio, .linha-pontos, .mobile-pontos").forEach(el => {
         const final = parseInt(el.getAttribute("data-val"), 10);
         const inicial = parseInt(el.getAttribute("data-old"), 10);
         if (isNaN(final)) return;
@@ -198,8 +228,26 @@ async function carregarRanking() {
 
         const podioDiv = document.getElementById("podio-container");
         const listaDiv = document.getElementById("ranking");
+        atualizarModoLayout();
+        const compact = isCompactView();
 
-        if (equipes.length >= 3) {
+        if (compact && equipes.length >= 3) {
+            const top3 = equipes.slice(0, 3);
+            const resto = equipes.slice(3);
+            const glow = document.getElementById("ambient-glow");
+            if (glow) glow.style.setProperty("--ambient-color", CORES_EQUIPES[top3[0].nome] || "transparent");
+
+            podioDiv.innerHTML = renderMobilePodio(top3, maiorPontuacao, liderMudou);
+            listaDiv.innerHTML = resto.length
+                ? `<p class="rank-section-label rank-section-demais">Demais equipes</p>${gerarLinhas(resto, maiorPontuacao, 4)}`
+                : "";
+        } else if (compact) {
+            podioDiv.innerHTML = "";
+            listaDiv.innerHTML = `
+                <p class="rank-section-label">Classificação</p>
+                ${gerarLinhas(equipes, maiorPontuacao, 1)}
+            `;
+        } else if (equipes.length >= 3) {
             const top3 = equipes.slice(0, 3);
             const resto = equipes.slice(3);
             const glow = document.getElementById("ambient-glow");
@@ -217,8 +265,10 @@ async function carregarRanking() {
         }
 
         animarNumeros();
-        animarEntradaPodio();
-        animarPosRanking();
+        if (!compact) {
+            animarEntradaPodio();
+            animarPosRanking();
+        }
         if (primeiraCarga) setTimeout(() => { primeiraCarga = false; }, 2800);
     } catch (erro) {
         console.error("Erro na API:", erro);
@@ -239,6 +289,44 @@ function renderBarra(perc, percAnterior, tipo) {
     return `<div class="${classe}">
         <div class="barra-fill" data-perc="${perc}" data-perc-old="${old}" style="width:${old}%;"></div>
     </div>`;
+}
+
+function renderMobilePodioCard(e, pos, maxPontuacao, novoLider) {
+    const cor = CORES_EQUIPES[e.nome] || "#aaaaaa";
+    const anim = processarAnimacao(e, pos);
+    const perc = calcularBarra(e.pontos, maxPontuacao);
+    const percOld = calcularBarra(anim.oldPts, maxPontuacao);
+    const imgTrofeu = IMAGENS_TROFEUS[pos] || "";
+    const fireHTML = anim.isOnFire ? `<span class="on-fire">🔥</span>` : "";
+    const liderClass = novoLider && pos === 1 ? " novo-lider" : "";
+    const medalhas = ["", "Ouro", "Prata", "Bronze"];
+
+    return `
+        <article class="mobile-podio-card mobile-rank-${pos}${liderClass} ${anim.mudou}" style="--team-color: ${cor};">
+            ${pos === 1 ? `<span class="mobile-crown" aria-hidden="true">👑</span>` : ""}
+            <span class="mobile-medal-tag">${medalhas[pos]}</span>
+            ${imgTrofeu ? `<img src="${imgTrofeu}" class="mobile-trofeu" alt="Troféu ${pos}º">` : ""}
+            <span class="mobile-rank-num">${pos}º</span>
+            <div class="mobile-team">
+                ${escudoHTML(cor)}
+                <span class="mobile-team-name">${e.nome}</span>
+                ${fireHTML}
+            </div>
+            <div class="mobile-pontos ${anim.subiuPontos}" data-val="${e.pontos}" data-old="${anim.oldPts}">${anim.oldPts}</div>
+            <div class="mobile-barra">
+                <div class="barra-fill" data-perc="${perc}" data-perc-old="${primeiraCarga ? 0 : percOld}" style="width:${primeiraCarga ? 0 : percOld}%;"></div>
+            </div>
+        </article>`;
+}
+
+function renderMobilePodio(top3, maxPontuacao, liderMudou) {
+    return `
+        <p class="rank-section-label rank-section-podio">Pódio</p>
+        <div class="mobile-podio-grid">
+            ${renderMobilePodioCard(top3[1], 2, maxPontuacao, false)}
+            ${renderMobilePodioCard(top3[0], 1, maxPontuacao, liderMudou)}
+            ${renderMobilePodioCard(top3[2], 3, maxPontuacao, false)}
+        </div>`;
 }
 
 function renderCardPodio(e, pos, maxPontuacao, delay, novoLider) {
@@ -274,23 +362,33 @@ function renderCardPodio(e, pos, maxPontuacao, delay, novoLider) {
     `;
 }
 
-function gerarLinhas(lista, max, startPos) {
+function gerarLinhas(lista, max, startPos, options = {}) {
+    const { destacarTop = false } = options;
+
     return lista.map((e, i) => {
         const cor = CORES_EQUIPES[e.nome] || "#aaaaaa";
-        const anim = processarAnimacao(e, startPos + i);
+        const pos = startPos + i;
+        const anim = processarAnimacao(e, pos);
         const perc = calcularBarra(e.pontos, max);
         const percOld = calcularBarra(anim.oldPts, max);
         const entraClass = primeiraCarga ? "entra-card" : "";
         const delayStyle = primeiraCarga ? `animation-delay: ${0.7 + i * 0.12}s;` : "";
         const fireHTML = anim.isOnFire ? `<span class="on-fire">🔥</span>` : "";
+        const rankExtra = destacarTop && pos <= 3 ? ` rank-top rank-top-${pos}` : "";
+        const trofeuMini = destacarTop && pos <= 3 && IMAGENS_TROFEUS[pos]
+            ? `<img src="${IMAGENS_TROFEUS[pos]}" class="rank-trophy-mini" alt="">`
+            : "";
 
         return `
-            <div class="card-linha ${anim.mudou} ${entraClass}" style="--team-color: ${cor}; ${delayStyle}">
-                <div class="linha-info-esq">
-                    <span class="linha-pos" data-pos="${startPos + i}">${startPos + i}º</span>
-                    <span class="linha-nome">${escudoHTML(cor)} <span>${e.nome}</span> ${fireHTML}</span>
+            <div class="card-linha${rankExtra} ${anim.mudou} ${entraClass}" style="--team-color: ${cor}; ${delayStyle}">
+                <div class="card-linha-body">
+                    <div class="linha-info-esq">
+                        <span class="linha-pos" data-pos="${pos}">${pos}º</span>
+                        ${trofeuMini}
+                        <span class="linha-nome">${escudoHTML(cor)} <span>${e.nome}</span> ${fireHTML}</span>
+                    </div>
+                    <div class="linha-pontos ${anim.subiuPontos}" data-val="${e.pontos}" data-old="${anim.oldPts}">${anim.oldPts}</div>
                 </div>
-                <div class="linha-pontos ${anim.subiuPontos}" data-val="${e.pontos}" data-old="${anim.oldPts}">${anim.oldPts}</div>
                 ${renderBarra(perc, primeiraCarga ? 0 : percOld, "lista")}
             </div>
         `;
@@ -308,7 +406,8 @@ function toggleFullscreen() {
 function criarParticulas() {
     const container = document.getElementById("particles");
     if (!container) return;
-    for (let i = 0; i < 35; i++) {
+    const total = isMobileView() ? 12 : 35;
+    for (let i = 0; i < total; i++) {
         const p = document.createElement("div");
         p.className = "particle";
         p.style.left = Math.random() * 100 + "vw";
@@ -318,6 +417,7 @@ function criarParticulas() {
     }
 }
 
+atualizarModoLayout();
 mostrarSkeleton();
 criarParticulas();
 calcularPrazo();
@@ -327,3 +427,13 @@ if (new Date() < new Date(CONFIG.DATA_FINAL)) {
 }
 
 document.getElementById("btn-fullscreen")?.addEventListener("click", toggleFullscreen);
+
+let resizeTimer;
+window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        const eraCompact = document.body.classList.contains("modo-compact");
+        atualizarModoLayout();
+        if (eraCompact !== isCompactView()) carregarRanking();
+    }, 200);
+});
