@@ -448,16 +448,462 @@ h2 { font-size: 0.9rem; color: var(--text-muted); font-weight: 700; text-transfo
 
 @keyframes popInLinha { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: none; } }
 
+.card-linha-body { display: contents; }
+
+.rank-section-label,
+.rank-trophy-mini { display: none; }
+
+.skeleton-linha {
+    min-height: 72px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border: 1px solid rgba(255,255,255,0.06);
+}
+
 @media (max-width: 900px) {
-    .top-bar { flex-direction: column; text-align: center; gap: 15px; }
-    .prazo-box { float: none; display: inline-block; }
-    h1 { font-size: 1.8rem; }
-    .podio-layout { flex-wrap: wrap; min-height: auto; }
-    .podio-wrapper { width: 45%; }
+    .top-bar {
+        flex-direction: column;
+        text-align: center;
+        gap: 14px;
+        padding: 0 20px;
+        margin-bottom: 20px;
+    }
+
+    .top-left, .top-right, .top-center { flex: none; width: 100%; }
+    .prazo-box { float: none; display: inline-block; margin: 0 auto; }
+    h1 { font-size: 1.85rem; }
+    h2 { font-size: 0.75rem; line-height: 1.4; padding: 0 8px; }
+
+    .podio-layout {
+        flex-wrap: wrap;
+        min-height: auto;
+        margin-top: 24px;
+        padding: 0 16px 8px;
+        gap: 14px;
+    }
+
+    .podio-wrapper { width: calc(50% - 8px); }
     .podio-wrapper.primeiro { width: 100%; order: -1; }
-    .podio-wrapper.primeiro .card-podio { width: 100%; max-width: 350px; }
-    .card-linha { padding: 12px 90px 32px 16px; min-height: 80px; }
-    .barra-lista { right: 85px; left: 16px; }
-    .linha-pontos { right: 16px; font-size: 1.8rem; }
-    .btn-fullscreen { bottom: 15px; right: 15px; width: 42px; height: 42px; }
+    .card-podio, .podio-wrapper.primeiro .card-podio { width: 100%; max-width: 340px; }
+    .ranking-list { padding: 0 16px; max-width: 100%; }
+    .card-linha { padding: 12px 88px 34px 16px; min-height: 76px; }
+    .barra-lista { right: 82px; left: 16px; }
+    .linha-pontos { right: 14px; font-size: 1.65rem; }
+}
+
+.rank-section-label,
+.rank-trophy-mini,
+.mobile-podio-grid,
+.mobile-podio-skeleton { display: none; }
+
+.skeleton-linha {
+    min-height: 72px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Tablet + celular — layout compacto com pódio destacado */
+body.modo-compact {
+    padding: 0 0 calc(20px + env(safe-area-inset-bottom));
+    overflow-x: hidden;
+}
+
+body.modo-compact .spotlight { opacity: 0.35; }
+body.modo-compact #ambient-glow { opacity: 0.12; }
+
+body.modo-compact .dashboard {
+    width: 100%;
+    padding: 0 16px;
+    align-items: stretch;
+}
+
+body.modo-compact #podio-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: auto;
+    margin-top: 8px;
+    padding: 0;
+    gap: 0;
+}
+
+body.modo-compact .rank-section-label {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #64748b;
+    margin: 0 0 10px;
+}
+
+body.modo-compact .rank-section-podio { margin-top: 4px; }
+body.modo-compact .rank-section-demais { margin-top: 18px; }
+
+body.modo-compact .mobile-podio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.22fr 1fr;
+    gap: 10px;
+    align-items: end;
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+body.modo-compact .mobile-podio-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px 8px 0;
+    border-radius: 14px;
+    background: rgba(12, 18, 28, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+body.modo-compact .mobile-crown {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    font-size: 1rem;
+    line-height: 1;
+    opacity: 0.9;
+}
+
+body.modo-compact .mobile-medal-tag {
+    font-size: 0.55rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    opacity: 0.85;
+}
+
+body.modo-compact .mobile-trofeu {
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.45));
+    margin-bottom: 4px;
+}
+
+body.modo-compact .mobile-rank-num {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #94a3b8;
+    margin-bottom: 4px;
+}
+
+body.modo-compact .mobile-team {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 4px;
+}
+
+body.modo-compact .mobile-team-name {
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #f1f5f9;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    line-height: 1.15;
+}
+
+body.modo-compact .mobile-team .escudo-svg { height: 16px; flex-shrink: 0; }
+
+body.modo-compact .mobile-pontos {
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: var(--team-color);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+body.modo-compact .mobile-barra {
+    width: 100%;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.4);
+    margin-top: auto;
+}
+
+body.modo-compact .mobile-barra .barra-fill {
+    border-radius: 0;
+    box-shadow: none;
+    height: 100%;
+}
+
+/* 1º — ouro, destaque central */
+body.modo-compact .mobile-rank-1 {
+    min-height: 172px;
+    padding-top: 14px;
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    background: linear-gradient(180deg, rgba(255, 215, 0, 0.12) 0%, rgba(12, 18, 28, 0.98) 50%);
+    box-shadow: 0 8px 28px rgba(255, 215, 0, 0.12);
+}
+
+body.modo-compact .mobile-rank-1 .mobile-medal-tag { color: #ffd700; }
+body.modo-compact .mobile-rank-1 .mobile-trofeu { height: 52px; }
+body.modo-compact .mobile-rank-1 .mobile-rank-num { color: #ffd700; font-size: 0.8rem; }
+body.modo-compact .mobile-rank-1 .mobile-team-name { font-size: 0.85rem; }
+body.modo-compact .mobile-rank-1 .mobile-pontos { font-size: 1.45rem; }
+
+/* 2º — prata */
+body.modo-compact .mobile-rank-2 {
+    min-height: 142px;
+    border-top: 3px solid #c0c0c0;
+}
+
+body.modo-compact .mobile-rank-2 .mobile-medal-tag { color: #c0c0c0; }
+body.modo-compact .mobile-rank-2 .mobile-trofeu { height: 40px; }
+body.modo-compact .mobile-rank-2 .mobile-rank-num { color: #e2e8f0; }
+
+/* 3º — bronze */
+body.modo-compact .mobile-rank-3 {
+    min-height: 132px;
+    border-top: 3px solid #cd7f32;
+}
+
+body.modo-compact .mobile-rank-3 .mobile-medal-tag { color: #cd7f32; }
+body.modo-compact .mobile-rank-3 .mobile-trofeu { height: 36px; }
+body.modo-compact .mobile-rank-3 .mobile-rank-num { color: #daa06d; }
+
+body.modo-compact .mobile-podio-skeleton {
+    display: grid;
+    grid-template-columns: 1fr 1.22fr 1fr;
+    gap: 10px;
+    align-items: end;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+body.modo-compact .skeleton-mobile-card {
+    border-radius: 14px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border: 1px solid rgba(255,255,255,0.06);
+}
+
+body.modo-compact .skeleton-mobile-card.rank-1 { height: 172px; }
+body.modo-compact .skeleton-mobile-card.rank-2 { height: 142px; }
+body.modo-compact .skeleton-mobile-card.rank-3 { height: 132px; }
+
+body.modo-compact .ranking-list {
+    width: 100%;
+    max-width: none;
+    margin-top: 0;
+    padding: 0;
+    gap: 8px;
+}
+
+body.modo-compact .card-linha {
+    display: block;
+    width: 100%;
+    min-height: 0;
+    padding: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-left: 4px solid var(--team-color);
+    background: rgba(14, 22, 34, 0.96);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transform: none;
+    opacity: 1;
+    animation: none;
+}
+
+body.modo-compact .card-linha.entra-card { opacity: 1; animation: none; transform: none; }
+body.modo-compact .card-linha:hover { transform: none; }
+
+body.modo-compact .card-linha-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 11px 14px 9px;
+}
+
+body.modo-compact .linha-info-esq {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    gap: 10px;
+}
+
+body.modo-compact .linha-pos {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    border-right: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #94a3b8;
+}
+
+body.modo-compact .card-linha .linha-nome {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0;
+    min-width: 0;
+}
+
+body.modo-compact .card-linha .linha-nome span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+body.modo-compact .escudo-svg { height: 20px; flex-shrink: 0; }
+
+body.modo-compact .linha-pontos {
+    position: static;
+    transform: none;
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--team-color);
+    flex-shrink: 0;
+}
+
+body.modo-compact .barra-lista {
+    position: static;
+    width: 100%;
+    height: 3px;
+    margin: 0;
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.35);
+}
+
+body.modo-compact .barra-fill { border-radius: 0; box-shadow: none; }
+
+body.modo-compact .update-msg {
+    margin-top: 16px;
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    text-align: center;
+    color: #64748b;
+}
+
+body.modo-compact .btn-fullscreen { display: none; }
+
+/* Tablet (769–1024) — pódio maior, header centralizado */
+body.modo-compact:not(.modo-mobile) .top-bar {
+    flex-direction: column;
+    text-align: center;
+    padding: 16px 20px 12px;
+    margin-bottom: 8px;
+    gap: 12px;
+}
+
+body.modo-compact:not(.modo-mobile) .top-left,
+body.modo-compact:not(.modo-mobile) .top-right,
+body.modo-compact:not(.modo-mobile) .top-center { flex: none; width: 100%; }
+
+body.modo-compact:not(.modo-mobile) .prazo-box {
+    float: none;
+    display: inline-flex;
+    margin: 0 auto;
+}
+
+body.modo-compact:not(.modo-mobile) .mobile-podio-grid {
+    gap: 14px;
+    max-width: 620px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.modo-compact:not(.modo-mobile) .mobile-rank-1 { min-height: 190px; }
+body.modo-compact:not(.modo-mobile) .mobile-rank-1 .mobile-trofeu { height: 58px; }
+body.modo-compact:not(.modo-mobile) .mobile-rank-1 .mobile-pontos { font-size: 1.6rem; }
+body.modo-compact:not(.modo-mobile) .mobile-rank-2 { min-height: 158px; }
+body.modo-compact:not(.modo-mobile) .mobile-rank-2 .mobile-trofeu { height: 46px; }
+body.modo-compact:not(.modo-mobile) .mobile-rank-3 { min-height: 148px; }
+body.modo-compact:not(.modo-mobile) .mobile-team-name { font-size: 0.82rem; }
+body.modo-compact:not(.modo-mobile) .ranking-list { max-width: 620px; margin-left: auto; margin-right: auto; }
+
+/* Celular — header fixo compacto */
+body.modo-mobile .spotlight,
+body.modo-mobile #ambient-glow { display: none; }
+
+body.modo-mobile .top-bar {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    grid-template-rows: auto auto;
+    gap: 2px 12px;
+    align-items: center;
+    width: 100%;
+    max-width: none;
+    padding: 14px 16px 12px;
+    margin: 0;
+    text-align: left;
+    background: rgba(8, 12, 20, 0.92);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+body.modo-mobile .top-left { grid-row: 1 / 3; flex: none; width: auto; }
+body.modo-mobile .top-center { grid-column: 2; flex: none; width: auto; text-align: left; }
+body.modo-mobile .top-right { grid-column: 1 / -1; flex: none; width: 100%; margin-top: 10px; }
+body.modo-mobile .logo-box { padding: 3px; border-width: 1px; box-shadow: none; }
+body.modo-mobile .logo-escola { width: 44px; height: 44px; }
+body.modo-mobile h1 { font-size: 1.05rem; letter-spacing: 0.6px; margin: 0; line-height: 1.2; text-shadow: none; }
+body.modo-mobile h2 { font-size: 0.58rem; font-weight: 600; letter-spacing: 0; text-transform: none; color: #64748b; line-height: 1.35; margin-top: 2px; padding: 0; }
+body.modo-mobile .prazo-box { float: none; display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); clip-path: none; text-align: left; }
+body.modo-mobile .prazo-label { font-size: 0.62rem; letter-spacing: 1.2px; }
+body.modo-mobile .prazo-valor { font-size: 1rem; font-variant-numeric: tabular-nums; }
+body.modo-mobile .dashboard { padding: 0 14px; }
+
+/* Celular pequeno — 1º em destaque no topo, 2º e 3º lado a lado */
+@media (max-width: 480px) {
+    body.modo-compact .mobile-podio-grid,
+    body.modo-compact .mobile-podio-skeleton {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "primeiro primeiro"
+            "segundo terceiro";
+        gap: 8px;
+    }
+
+    body.modo-compact .mobile-rank-1,
+    body.modo-compact .skeleton-mobile-card.rank-1 { grid-area: primeiro; min-height: 148px; }
+    body.modo-compact .mobile-rank-2,
+    body.modo-compact .skeleton-mobile-card.rank-2 { grid-area: segundo; min-height: 130px; }
+    body.modo-compact .mobile-rank-3,
+    body.modo-compact .skeleton-mobile-card.rank-3 { grid-area: terceiro; min-height: 130px; }
+
+    body.modo-compact .mobile-rank-1 .mobile-team-name { font-size: 0.85rem; }
+    body.modo-compact .mobile-rank-2 .mobile-team-name,
+    body.modo-compact .mobile-rank-3 .mobile-team-name { font-size: 0.7rem; }
+}
+
+@media (max-width: 380px) {
+    body.modo-mobile h1 { font-size: 0.95rem; }
+    body.modo-compact .linha-pontos { font-size: 1.05rem; }
+    body.modo-compact .card-linha .linha-nome { font-size: 0.85rem; }
 }
