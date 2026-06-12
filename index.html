@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gincana 50 Anos - Placar Oficial</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="offline-banner">Sem conexão com o servidor — tentando reconectar...</div>
+    <div id="arena-bg"></div>
+    <div id="arena-overlay"></div>
+    <div class="spotlight left"></div>
+    <div class="spotlight right"></div>
+    <div id="ambient-glow"></div>
+    <div id="particles"></div>
+    <div id="celebration-confetti"></div>
+
+    <header class="top-bar">
+        <div class="top-left">
+            <div class="logo-box">
+                <img src="img/logo_militar.png" alt="Logo do Colégio" class="logo-escola">
+            </div>
+        </div>
+
+        <div class="top-center">
+            <h1>GINCANA 50 ANOS</h1>
+            <h2>Colégio Estadual Cívico-Militar Polivalente Carlos Domingos Silva</h2>
+        </div>
+
+        <div class="top-right">
+            <div id="prazo-container" class="prazo-box"></div>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <div id="podio-container" class="podio-layout"></div>
+        <div id="ranking" class="ranking-list"></div>
+        <div class="update-msg">
+            <span class="icon-sync">↻</span> Atualizado em tempo real
+        </div>
+    </main>
+
+    <button id="btn-fullscreen" class="btn-fullscreen" title="Modo telão (tela cheia)">⛶</button>
+
+    <script src="js/config.js"></script>
+    <script src="js/equipes.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

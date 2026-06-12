@@ -1,0 +1,202 @@
+body {
+    background-color: var(--bg-base, #0d1520);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px 40px;
+    overflow-x: hidden;
+}
+
+#arena-bg {
+    position: fixed; inset: 0;
+    background:
+        radial-gradient(ellipse 70% 45% at 50% 20%, rgba(255, 215, 0, 0.25) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 40% at 20% 80%, rgba(85, 107, 47, 0.3) 0%, transparent 50%),
+        linear-gradient(165deg, #0a1018 0%, #1a2a3a 40%, #0d1520 100%);
+    z-index: -4;
+    pointer-events: none;
+}
+
+#arena-overlay {
+    position: fixed; inset: 0;
+    background: rgba(10, 18, 28, 0.45);
+    z-index: -3;
+    pointer-events: none;
+}
+
+#celebration-confetti {
+    position: fixed; inset: 0; pointer-events: none; z-index: 100; overflow: hidden;
+}
+.confetti {
+    position: absolute; top: -10px; width: 12px; height: 18px;
+    animation: confettiFall ease-out forwards;
+}
+@keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+#particles {
+    position: fixed; inset: 0; pointer-events: none; z-index: -1; overflow: hidden;
+}
+.particle {
+    position: absolute; bottom: -10px; width: 5px; height: 5px;
+    background: rgba(255, 215, 0, 0.6); border-radius: 50%;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.7);
+    animation: floatUp linear infinite;
+}
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100vh) scale(0); opacity: 0; }
+}
+
+.vencedor-header {
+    text-align: center;
+    z-index: 10;
+    margin-bottom: 20px;
+}
+
+.vencedor-header .logo-escola {
+    width: 90px; height: 90px; border-radius: 50%; object-fit: cover;
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
+    margin-bottom: 12px;
+}
+
+.vencedor-subtitulo {
+    font-size: 0.85rem;
+    color: var(--text-muted, #94a3b8);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+}
+
+.vencedor-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 720px;
+    z-index: 10;
+    text-align: center;
+}
+
+.carregando, .erro-msg {
+    color: var(--text-muted, #94a3b8);
+    font-size: 1.1rem;
+}
+
+.titulo-parabens {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 900;
+    color: var(--accent-gold, #ffd700);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+    margin-bottom: 8px;
+    animation: brilhoTitulo 2s ease-in-out infinite alternate;
+}
+@keyframes brilhoTitulo {
+    from { filter: brightness(1); }
+    to { filter: brightness(1.2); }
+}
+
+.subtitulo-parabens {
+    font-size: 1.15rem;
+    color: #e2e8f0;
+    margin-bottom: 36px;
+    font-weight: 600;
+}
+
+.card-vencedor {
+    width: 100%;
+    max-width: 480px;
+    padding: 40px 32px 36px;
+    border-radius: 20px;
+    border: 3px solid var(--team-color, #ffd700);
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.95) 0%, rgba(10, 15, 25, 0.98) 100%);
+    box-shadow:
+        0 0 60px color-mix(in srgb, var(--team-color) 50%, transparent),
+        0 25px 50px rgba(0, 0, 0, 0.5);
+    animation: cardEntra 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    opacity: 0;
+}
+@keyframes cardEntra {
+    from { opacity: 0; transform: scale(0.85) translateY(40px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.coroa-grande {
+    font-size: 4rem;
+    margin-bottom: 12px;
+    animation: floatCrown 2.5s ease-in-out infinite;
+}
+@keyframes floatCrown {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-12px) rotate(5deg); }
+}
+
+.trofeu-vencedor {
+    height: 140px;
+    object-fit: contain;
+    filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.6));
+    margin-bottom: 20px;
+}
+
+.nome-vencedor {
+    font-size: clamp(2.5rem, 8vw, 3.8rem);
+    font-weight: 900;
+    color: var(--team-color, #fff);
+    text-transform: uppercase;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.nome-vencedor .escudo-svg { height: 48px; }
+
+.pontos-vencedor {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--accent-gold, #ffd700);
+    margin-bottom: 16px;
+    font-variant-numeric: tabular-nums;
+}
+
+.mensagem-vencedor {
+    font-size: 1.05rem;
+    color: #cbd5e1;
+    line-height: 1.6;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.empate-aviso {
+    font-size: 0.95rem;
+    color: var(--accent-gold, #ffd700);
+    margin-top: 16px;
+    font-weight: 700;
+}
+
+.vencedor-footer {
+    margin-top: 32px;
+    z-index: 10;
+}
+
+.btn-link-placar {
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 600px) {
+    .card-vencedor { padding: 28px 20px; }
+    .trofeu-vencedor { height: 110px; }
+}
