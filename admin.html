@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle da Gincana</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+    <div id="login-screen">
+        <h1>Controle da Gincana</h1>
+        <h2>Acesso restrito</h2>
+        <p>Digite o PIN fornecido pela organização para alterar pontuações.</p>
+        <input type="password" id="pin-input" class="input-pin" placeholder="••••" maxlength="32" autocomplete="off">
+        <button id="btn-login" class="btn btn-accent">Entrar</button>
+        <p id="login-erro" class="erro-msg"></p>
+    </div>
+
+    <div id="admin-content" class="hidden">
+        <div class="admin-header">
+            <h1>Controle de Pontos</h1>
+            <div class="header-actions">
+                <button id="btn-atualizar-hist" class="btn">Atualizar histórico</button>
+                <button id="btn-sair" class="btn btn-danger">Sair</button>
+            </div>
+        </div>
+
+        <div id="painel"></div>
+
+        <section id="historico-section" class="glass-panel">
+            <h3>Últimas alterações</h3>
+            <div id="hist-lista" class="hist-lista">
+                <p class="hist-vazio">Carregando...</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/equipes.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
