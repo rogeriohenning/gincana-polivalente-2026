@@ -77,9 +77,12 @@ function renderCardDemais(equipe, pos, index) {
 async function carregarVencedor() {
     const el = document.getElementById("conteudo-vencedor");
     try {
-        const res = await fetch(`${API_URL}?t=${Date.now()}`);
-        if (!res.ok) throw new Error("Erro na API");
-        const dados = await res.json();
+        const dados = window.__gincanaDados
+            ? await window.__gincanaDados
+            : await fetch(`${API_URL}?t=${Date.now()}`).then(res => {
+                if (!res.ok) throw new Error("Erro na API");
+                return res.json();
+            });
         if (!Array.isArray(dados)) throw new Error("Formato inválido da API");
 
         const equipes = dados

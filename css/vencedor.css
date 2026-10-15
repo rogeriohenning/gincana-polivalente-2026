@@ -110,17 +110,17 @@ body {
 .vencedor-header {
     text-align: center;
     margin-bottom: 8px;
-    opacity: 0;
-    animation: fadeDown 0.6s ease forwards;
 }
 
 .vencedor-header .logo-escola {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    object-fit: cover;
-    filter: drop-shadow(0 0 16px rgba(255, 215, 0, 0.4));
-    margin-bottom: 8px;
+    width: min(210px, 58vw);
+    height: auto;
+    border-radius: 0;
+    object-fit: contain;
+    filter: none;
+    image-rendering: auto;
+    margin-bottom: 4px;
+    background: transparent;
 }
 
 .vencedor-subtitulo {
@@ -488,7 +488,7 @@ body {
 /* Celular */
 @media (max-width: 600px) {
     .page-shell { padding: 14px 12px 20px; }
-    .vencedor-header .logo-escola { width: 56px; height: 56px; }
+    .vencedor-header .logo-escola { width: min(168px, 62vw); height: auto; }
     .vencedor-subtitulo { font-size: 0.65rem; }
     .subtitulo-parabens { font-size: 0.9rem; }
     .winner-stage { padding: 32px 4px 12px; max-width: 100%; }
@@ -517,7 +517,7 @@ body {
 /* PC */
 @media (min-width: 1025px) {
     .page-shell { width: min(760px, 90%); padding: 28px 24px 32px; }
-    .vencedor-header .logo-escola { width: 80px; height: 80px; }
+    .vencedor-header .logo-escola { width: 230px; height: auto; }
     .trofeu-vencedor { height: 120px; }
     .ranking-bloco { max-width: 520px; }
 }
