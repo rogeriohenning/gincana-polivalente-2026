@@ -14,6 +14,24 @@ const IMAGENS_TROFEUS = [null, "img/ouro.png", "img/prata.png", "img/bronze.png"
 const escudoHTML = (cor) =>
     `<svg class="escudo-svg" viewBox="0 0 24 24" fill="${cor}" stroke="rgba(255,255,255,0.4)" stroke-width="1"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>`;
 
+const canhaoHolofote = `<svg class="canhao" viewBox="0 0 64 72" focusable="false">
+    <rect class="metal-dark" x="27" y="0" width="10" height="6" rx="1.2"/>
+    <rect class="metal" x="12" y="4" width="40" height="6" rx="2"/>
+    <rect class="metal" x="10" y="12" width="7" height="28" rx="3"/>
+    <rect class="metal" x="47" y="12" width="7" height="28" rx="3"/>
+    <rect class="corpo" x="16" y="14" width="32" height="36" rx="9"/>
+    <rect class="reflexo" x="21" y="18" width="6" height="16" rx="3"/>
+    <rect class="metal" x="13" y="44" width="4" height="16" rx="1"/>
+    <rect class="metal" x="47" y="44" width="4" height="16" rx="1"/>
+    <ellipse class="aro" cx="32" cy="54" rx="13" ry="10"/>
+    <ellipse class="lente" cx="32" cy="54" rx="8.5" ry="6.2"/>
+    <ellipse class="nucleo" cx="30.2" cy="52.4" rx="2.6" ry="1.8"/>
+</svg>`;
+
+function blocoHolofote(lado) {
+    return `<div class="holofote h-${lado}" aria-hidden="true"><span class="feixe"></span>${canhaoHolofote}</div>`;
+}
+
 function criarParticulas() {
     const container = document.getElementById("particles");
     if (!container) return;
@@ -120,9 +138,10 @@ async function carregarVencedor() {
                 <h1 class="titulo-parabens">Parabéns!</h1>
                 <p class="subtitulo-parabens">A equipe campeã da Gincana 50 Anos</p>
                 <div class="winner-stage">
-                    <div class="holofote h-left" aria-hidden="true"></div>
-                    <div class="holofote h-center" aria-hidden="true"></div>
-                    <div class="holofote h-right" aria-hidden="true"></div>
+                    <div class="trilho-luz" aria-hidden="true"></div>
+                    ${blocoHolofote("left")}
+                    ${blocoHolofote("center")}
+                    ${blocoHolofote("right")}
                     <div class="holofote-floor" aria-hidden="true"></div>
                     <div class="card-vencedor">
                         <div class="coroa-grande">👑</div>
