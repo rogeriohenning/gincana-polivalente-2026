@@ -219,19 +219,71 @@ body {
     transform-origin: top center;
 }
 
+.holofote::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 64px;
+    height: 64px;
+    transform: translate(-50%, -46%);
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(
+        circle,
+        #ffffff 0%,
+        rgba(255, 255, 255, 0.9) 16%,
+        color-mix(in srgb, var(--team-color, #ff1493) 40%, white) 38%,
+        transparent 72%
+    );
+    filter: blur(1px);
+}
+
 .holofote .feixe {
     position: absolute;
     inset: 0;
     transform-origin: top center;
+    background: none;
+}
+
+.holofote .feixe::before,
+.holofote .feixe::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -4px;
+    height: 108%;
+    transform: translateX(-50%);
+    transform-origin: top center;
+    pointer-events: none;
+}
+
+.holofote .feixe::before {
+    width: 130%;
     background: linear-gradient(
         to bottom,
-        rgba(255, 255, 255, 0.95) 0%,
-        color-mix(in srgb, var(--team-color, #ff1493) 75%, white) 22%,
-        color-mix(in srgb, var(--team-color, #ff1493) 40%, transparent) 58%,
+        rgba(255, 255, 255, 0.42) 0%,
+        color-mix(in srgb, var(--team-color, #ff1493) 16%, rgba(255, 255, 255, 0.28)) 26%,
+        color-mix(in srgb, var(--team-color, #ff1493) 12%, transparent) 64%,
         transparent 100%
     );
-    clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
-    filter: blur(0.4px);
+    clip-path: polygon(34% 0, 66% 0, 104% 100%, -4% 100%);
+    filter: blur(16px);
+}
+
+.holofote .feixe::after {
+    width: 42%;
+    background: linear-gradient(
+        to bottom,
+        #ffffff 0%,
+        rgba(255, 255, 255, 0.92) 7%,
+        color-mix(in srgb, var(--team-color, #ff1493) 18%, rgba(255, 255, 255, 0.72)) 32%,
+        color-mix(in srgb, var(--team-color, #ff1493) 10%, transparent) 70%,
+        transparent 100%
+    );
+    clip-path: polygon(44% 0, 56% 0, 82% 100%, 18% 100%);
+    filter: blur(2px);
+    mix-blend-mode: screen;
 }
 
 .holofote.h-left {
@@ -264,7 +316,6 @@ body {
     transform: translate(-50%, -75%);
     z-index: 2;
     overflow: visible;
-    filter: drop-shadow(0 8px 6px rgba(0, 0, 0, 0.55));
 }
 .canhao .metal { fill: #b7c2d1; }
 .canhao .metal-dark { fill: #6e7c8e; }
@@ -275,11 +326,13 @@ body {
 }
 .canhao .reflexo { fill: rgba(255, 255, 255, 0.28); }
 .canhao .aro { fill: #e8eef6; }
-.canhao .lente {
-    fill: var(--team-color, #ffd700);
-    filter: drop-shadow(0 0 4px var(--team-color, #ffd700));
-}
+.canhao .lente { fill: #fff8fb; }
 .canhao .nucleo { fill: #ffffff; }
+.canhao {
+    filter:
+        drop-shadow(0 8px 6px rgba(0, 0, 0, 0.55))
+        drop-shadow(0 14px 16px color-mix(in srgb, var(--team-color, #ff1493) 65%, transparent));
+}
 
 .holofote-floor {
     position: absolute;
@@ -291,10 +344,11 @@ body {
     border-radius: 50%;
     background: radial-gradient(
         ellipse at center,
-        color-mix(in srgb, var(--team-color, #ff1493) 48%, transparent) 0%,
-        transparent 70%
+        rgba(255, 255, 255, 0.42) 0%,
+        color-mix(in srgb, var(--team-color, #ff1493) 20%, transparent) 32%,
+        transparent 74%
     );
-    filter: blur(8px);
+    filter: blur(18px);
     z-index: 0;
     pointer-events: none;
     animation: floorPulse 2.8s ease-in-out infinite;
@@ -316,19 +370,19 @@ body {
     100% { transform: rotate(-8deg); }
 }
 @keyframes feixeLeft {
-    0% { opacity: 0.45; }
+    0% { opacity: 0.78; }
     40% { opacity: 1; }
-    100% { opacity: 0.6; }
+    100% { opacity: 0.84; }
 }
 @keyframes feixeRight {
-    0% { opacity: 0.5; }
+    0% { opacity: 0.8; }
     45% { opacity: 1; }
-    100% { opacity: 0.55; }
+    100% { opacity: 0.82; }
 }
 @keyframes feixeCenter {
-    0% { opacity: 0.55; transform: scaleX(0.8); }
-    50% { opacity: 1; transform: scaleX(1.2); }
-    100% { opacity: 0.7; transform: scaleX(0.9); }
+    0% { opacity: 0.82; transform: scaleX(0.92); }
+    50% { opacity: 1; transform: scaleX(1.06); }
+    100% { opacity: 0.86; transform: scaleX(0.96); }
 }
 @keyframes floorPulse {
     0%, 100% { opacity: 0.4; transform: translateX(-50%) scale(0.86); }
@@ -559,7 +613,7 @@ body {
     .vencedor-header .logo-escola { width: min(168px, 62vw); height: auto; }
     .vencedor-subtitulo { font-size: 0.65rem; }
     .subtitulo-parabens { font-size: 0.9rem; }
-    .winner-stage { padding: 32px 4px 12px; max-width: 100%; margin-top: 44px; }
+    .winner-stage { padding: 96px 4px 12px; max-width: 100%; margin-top: 44px; }
     .canhao { width: 40px; height: 45px; }
     .card-vencedor { padding: 22px 16px 18px; }
     .trofeu-vencedor { height: 88px; }
