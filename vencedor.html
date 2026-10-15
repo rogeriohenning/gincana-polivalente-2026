@@ -7,10 +7,615 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/shared.css">
-    <link rel="stylesheet" href="css/vencedor.css">
+    <style>
+:root {
+    --bg-dark: #121826;
+    --bg-base: #0b0c10;
+    --bg-panel: rgba(255, 255, 255, 0.05);
+    --text-main: #ffffff;
+    --text-muted: #94a3b8;
+    --accent: #ffd700;
+    --shadow-panel: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --border-panel: 1px solid rgba(255, 255, 255, 0.1);
+    --danger: #ff4757;
+    --success: #2ed573;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    background-color: #0d1520;
+    color: var(--text-main);
+}
+
+.btn {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-main);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 10px 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.btn:hover { background: rgba(255, 255, 255, 0.14); }
+.btn:active { transform: translateY(1px); }
+.btn-accent { background: var(--accent); color: #1a1a1a; border-color: var(--accent); }
+.btn-accent:hover { filter: brightness(1.1); }
+.btn-danger { background: rgba(255, 71, 87, 0.2); border-color: var(--danger); color: var(--danger); }
+
+.input-pin {
+    width: 100%;
+    max-width: 280px;
+    padding: 14px 18px;
+    font-size: 1.2rem;
+    letter-spacing: 6px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.3);
+    border: var(--border-panel);
+    border-radius: 10px;
+    color: var(--text-main);
+    font-family: inherit;
+    outline: none;
+}
+
+.input-pin:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.15); }
+
+.glass-panel {
+    background: var(--bg-panel);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: var(--border-panel);
+    box-shadow: var(--shadow-panel);
+}
+
+.erro-msg { color: var(--danger); font-size: 0.9rem; margin-top: 10px; min-height: 20px; }
+
+body {
+    background-color: var(--bg-base, #0d1520);
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: 0;
+    overflow-x: hidden;
+    color: #fff;
+}
+
+#arena-bg {
+    position: fixed; inset: 0;
+    background:
+        radial-gradient(ellipse 65% 40% at 50% 10%, color-mix(in srgb, var(--team-color, #ff1493) 30%, transparent) 0%, transparent 55%),
+        radial-gradient(ellipse 45% 35% at 15% 90%, rgba(85, 107, 47, 0.28) 0%, transparent 50%),
+        linear-gradient(165deg, #070b12 0%, #152233 42%, #0d1520 100%);
+    z-index: -4;
+    pointer-events: none;
+}
+
+#arena-overlay {
+    position: fixed; inset: 0;
+    background: rgba(8, 14, 22, 0.35);
+    z-index: -3;
+    pointer-events: none;
+}
+
+.spotlight-beam {
+    position: fixed;
+    top: -18vh;
+    width: 30vw;
+    max-width: 360px;
+    height: 110vh;
+    background: linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--team-color, #ff1493) 24%, transparent),
+        rgba(255, 255, 255, 0.05) 38%,
+        transparent 70%
+    );
+    filter: blur(44px);
+    z-index: -2;
+    pointer-events: none;
+    transform-origin: top center;
+    opacity: 0.65;
+}
+
+.spotlight-beam.left {
+    left: 6vw;
+    animation: spotlightSwing 8s ease-in-out infinite alternate;
+}
+
+.spotlight-beam.right {
+    right: 6vw;
+    animation: spotlightSwing 10s ease-in-out infinite alternate-reverse;
+    animation-delay: -2.5s;
+}
+
+@keyframes spotlightSwing {
+    0% { transform: rotate(-24deg); opacity: 0.4; }
+    50% { opacity: 0.8; }
+    100% { transform: rotate(24deg); opacity: 0.45; }
+}
+
+#celebration-confetti {
+    position: fixed; inset: 0; pointer-events: none; z-index: 100; overflow: hidden;
+}
+.confetti {
+    position: absolute; top: -10px; width: 11px; height: 16px;
+    animation: confettiFall ease-out forwards;
+}
+@keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+#particles {
+    position: fixed; inset: 0; pointer-events: none; z-index: -1; overflow: hidden;
+}
+.particle {
+    position: absolute; bottom: -10px; width: 4px; height: 4px;
+    background: rgba(255, 215, 0, 0.55);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.55);
+    animation: floatUp linear infinite;
+}
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+.page-shell {
+    position: relative;
+    z-index: 10;
+    width: min(720px, 100%);
+    margin: 0 auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 16px 24px;
+    box-sizing: border-box;
+}
+
+.vencedor-header {
+    text-align: center;
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeDown 0.6s ease forwards;
+}
+
+.vencedor-header .logo-escola {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: drop-shadow(0 0 16px rgba(255, 215, 0, 0.4));
+    margin-bottom: 8px;
+}
+
+.vencedor-subtitulo {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+}
+
+.vencedor-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#conteudo-vencedor { width: 100%; }
+
+.carregando, .erro-msg {
+    color: #94a3b8;
+    text-align: center;
+    padding: 40px 16px;
+}
+
+.layout-vencedor {
+    width: 100%;
+    text-align: center;
+}
+
+.titulo-parabens {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 0 0 6px;
+    background: linear-gradient(110deg, #b8860b, #ffd700 28%, #fff8dc 50%, #ffd700 72%, #daa520);
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 3.5s linear infinite, fadeUp 0.7s ease forwards;
+    opacity: 0;
+    filter: drop-shadow(0 0 16px rgba(255, 215, 0, 0.35));
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% center; }
+    100% { background-position: 220% center; }
+}
+
+.subtitulo-parabens {
+    font-size: 1rem;
+    color: #e2e8f0;
+    margin: 0 0 12px;
+    font-weight: 600;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.12s forwards;
+}
+
+/* Palco + holofotes na campeã */
+.winner-stage {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto 8px;
+    padding: 40px 10px 16px;
+    isolation: isolate;
+}
+
+.holofote {
+    position: absolute;
+    top: 0;
+    width: 44%;
+    height: 82%;
+    pointer-events: none;
+    z-index: 0;
+    transform-origin: top center;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.6) 0%,
+        color-mix(in srgb, var(--team-color, #ff1493) 55%, rgba(255, 255, 255, 0.35)) 30%,
+        color-mix(in srgb, var(--team-color, #ff1493) 20%, transparent) 65%,
+        transparent 100%
+    );
+    clip-path: polygon(40% 0, 60% 0, 100% 100%, 0 100%);
+    filter: blur(1px);
+    mix-blend-mode: screen;
+    opacity: 0.9;
+}
+
+.holofote.h-left {
+    left: 0;
+    animation: holofoteLeft 4.2s ease-in-out infinite;
+}
+
+.holofote.h-center {
+    left: 50%;
+    width: 50%;
+    margin-left: -25%;
+    animation: holofoteCenter 3.6s ease-in-out infinite;
+}
+
+.holofote.h-right {
+    right: 0;
+    left: auto;
+    animation: holofoteRight 4.8s ease-in-out infinite;
+}
+
+.holofote-floor {
+    position: absolute;
+    left: 50%;
+    bottom: 6%;
+    width: 72%;
+    height: 28%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(
+        ellipse at center,
+        color-mix(in srgb, var(--team-color, #ff1493) 48%, transparent) 0%,
+        transparent 70%
+    );
+    filter: blur(8px);
+    z-index: 0;
+    pointer-events: none;
+    animation: floorPulse 2.8s ease-in-out infinite;
+}
+
+@keyframes holofoteLeft {
+    0%, 100% { transform: rotate(-16deg); opacity: 0.55; }
+    50% { transform: rotate(-5deg); opacity: 1; }
+}
+@keyframes holofoteRight {
+    0%, 100% { transform: rotate(16deg); opacity: 0.55; }
+    50% { transform: rotate(5deg); opacity: 1; }
+}
+@keyframes holofoteCenter {
+    0%, 100% { transform: rotate(-2deg) scaleX(0.94); opacity: 0.75; }
+    50% { transform: rotate(2deg) scaleX(1.08); opacity: 1; }
+}
+@keyframes floorPulse {
+    0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(0.94); }
+    50% { opacity: 0.95; transform: translateX(-50%) scale(1.08); }
+}
+
+.card-vencedor {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 28px 24px 24px;
+    border-radius: 22px;
+    border: 1px solid color-mix(in srgb, var(--team-color, #ff1493) 50%, rgba(255, 255, 255, 0.2));
+    background: linear-gradient(
+        165deg,
+        color-mix(in srgb, var(--team-color, #ff1493) 16%, rgba(255, 255, 255, 0.1)) 0%,
+        rgba(15, 23, 42, 0.62) 48%,
+        rgba(8, 12, 20, 0.78) 100%
+    );
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    opacity: 0;
+    transform: translateY(28px) scale(0.94);
+    animation:
+        cardEntra 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s forwards,
+        winnerGlow 2.8s ease-in-out 1s infinite;
+}
+
+@keyframes cardEntra {
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes winnerGlow {
+    0%, 100% {
+        box-shadow:
+            0 0 28px color-mix(in srgb, var(--team-color) 35%, transparent),
+            0 20px 40px rgba(0, 0, 0, 0.45);
+    }
+    50% {
+        box-shadow:
+            0 0 52px color-mix(in srgb, var(--team-color) 55%, transparent),
+            0 20px 40px rgba(0, 0, 0, 0.45);
+    }
+}
+
+.coroa-grande {
+    font-size: 2.8rem;
+    line-height: 1;
+    margin-bottom: 6px;
+    animation: floatCrown 2.5s ease-in-out infinite;
+}
+@keyframes floatCrown {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+.trofeu-vencedor {
+    height: 110px;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.55));
+    margin-bottom: 10px;
+}
+
+.nome-vencedor {
+    font-size: clamp(2.2rem, 7vw, 3.2rem);
+    font-weight: 900;
+    color: var(--team-color, #fff);
+    text-transform: uppercase;
+    text-shadow: 0 3px 16px rgba(0, 0, 0, 0.55), 0 0 28px color-mix(in srgb, var(--team-color) 40%, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.nome-vencedor .escudo-svg { height: 40px; }
+
+.pontos-vencedor {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #ffd700;
+    margin-bottom: 10px;
+    font-variant-numeric: tabular-nums;
+}
+
+.mensagem-vencedor {
+    font-size: 0.95rem;
+    color: #cbd5e1;
+    line-height: 1.5;
+    max-width: 340px;
+    margin: 0 auto;
+}
+
+.empate-aviso {
+    font-size: 0.9rem;
+    color: #ffd700;
+    margin-top: 10px;
+    font-weight: 700;
+}
+
+/* Lista elegante 2º–6º */
+.ranking-bloco {
+    width: 100%;
+    max-width: 480px;
+    margin: 20px auto 0;
+    text-align: left;
+}
+
+.ranking-titulo {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    text-align: center;
+    margin: 0 0 12px;
+    opacity: 0;
+    animation: fadeUp 0.55s ease 0.7s forwards;
+}
+
+.ranking-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.rank-row {
+    display: grid;
+    grid-template-columns: 40px 26px 1fr auto;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 4px solid var(--team-color, #94a3b8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+    opacity: 0;
+    transform: translateY(18px);
+    animation: cardCascade 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation-delay: calc(0.8s + var(--i, 0) * 0.1s);
+}
+
+@keyframes cardCascade {
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.rank-pos {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: #e2e8f0;
+}
+
+.rank-trofeu,
+.rank-trofeu-slot {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.rank-nome {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #f8fafc;
+    min-width: 0;
+}
+
+.rank-nome span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rank-nome .escudo-svg { height: 20px; flex-shrink: 0; }
+
+.rank-pontos {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--team-color, #ffd700);
+    font-variant-numeric: tabular-nums;
+}
+
+.rank-top-2 { border-top: 2px solid #c0c0c0; }
+.rank-top-2 .rank-pos { background: rgba(192, 192, 192, 0.16); color: #f1f5f9; }
+.rank-top-3 { border-top: 2px solid #cd7f32; }
+.rank-top-3 .rank-pos { background: rgba(205, 127, 50, 0.16); color: #daa06d; }
+
+.vencedor-footer {
+    margin-top: 20px;
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 1.3s forwards;
+}
+
+.btn-link-placar {
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+/* Celular */
+@media (max-width: 600px) {
+    .page-shell { padding: 14px 12px 20px; }
+    .vencedor-header .logo-escola { width: 56px; height: 56px; }
+    .vencedor-subtitulo { font-size: 0.65rem; }
+    .subtitulo-parabens { font-size: 0.9rem; }
+    .winner-stage { padding: 32px 4px 12px; max-width: 100%; }
+    .card-vencedor { padding: 22px 16px 18px; }
+    .trofeu-vencedor { height: 88px; }
+    .coroa-grande { font-size: 2.2rem; }
+    .pontos-vencedor { font-size: 1.65rem; }
+    .mensagem-vencedor { font-size: 0.88rem; }
+    .ranking-bloco { margin-top: 16px; }
+    .rank-row {
+        grid-template-columns: 36px 22px 1fr auto;
+        padding: 10px 12px;
+        gap: 6px;
+    }
+    .rank-nome { font-size: 0.85rem; }
+    .rank-pontos { font-size: 1.05rem; }
+    .spotlight-beam { opacity: 0.55; }
+}
+
+/* Tablet */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .page-shell { width: min(680px, 92%); padding: 24px 20px 28px; }
+    .winner-stage { max-width: 480px; }
+    .ranking-bloco { max-width: 500px; }
+}
+
+/* PC */
+@media (min-width: 1025px) {
+    .page-shell { width: min(760px, 90%); padding: 28px 24px 32px; }
+    .vencedor-header .logo-escola { width: 80px; height: 80px; }
+    .trofeu-vencedor { height: 120px; }
+    .ranking-bloco { max-width: 520px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .titulo-parabens,
+    .subtitulo-parabens,
+    .card-vencedor,
+    .rank-row,
+    .ranking-titulo,
+    .vencedor-header,
+    .vencedor-footer,
+    .spotlight-beam,
+    .holofote,
+    .holofote-floor {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    .holofote.h-center { margin-left: -25%; }
+    .holofote-floor { transform: translateX(-50%); }
+}
+
+    </style>
 </head>
-<body>
+<body style="background-color:#0d1520;color:#ffffff">
     <div id="arena-bg"></div>
     <div id="arena-overlay"></div>
     <div class="spotlight-beam left" aria-hidden="true"></div>
