@@ -45,36 +45,38 @@ body {
 
 .spotlight-beam.left {
     left: 6vw;
-    animation: spotlightSwing 8s ease-in-out infinite alternate;
+    animation: spotlightSwing 2.4s ease-in-out infinite;
 }
 
 .spotlight-beam.right {
     right: 6vw;
-    animation: spotlightSwing 10s ease-in-out infinite alternate-reverse;
-    animation-delay: -2.5s;
+    animation: spotlightSwing 2.8s ease-in-out infinite reverse;
+    animation-delay: -0.6s;
 }
 
 @keyframes spotlightSwing {
-    0% { transform: rotate(-24deg); opacity: 0.4; }
-    50% { opacity: 0.8; }
-    100% { transform: rotate(24deg); opacity: 0.45; }
+    0% { transform: rotate(-34deg); opacity: 0.35; }
+    35% { transform: rotate(18deg); opacity: 0.85; }
+    70% { transform: rotate(-12deg); opacity: 0.5; }
+    100% { transform: rotate(32deg); opacity: 0.75; }
 }
 
 #celebration-confetti {
-    position: fixed; inset: 0; pointer-events: none; z-index: 100; overflow: hidden;
+    position: fixed; inset: 0; pointer-events: none; z-index: 4; overflow: hidden;
 }
 .confetti {
     position: absolute;
-    top: -24px;
-    width: 10px;
-    height: 16px;
+    top: -16px;
+    width: 7px;
+    height: 11px;
     border-radius: 2px;
-    animation: confettiFall linear infinite;
+    opacity: 0.55;
+    animation: confettiFall 4.8s linear infinite;
 }
 @keyframes confettiFall {
-    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-    80% { opacity: 1; }
-    100% { transform: translateY(110vh) rotate(640deg); opacity: 0; }
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    12% { opacity: 0.5; }
+    100% { transform: translateY(108vh) rotate(280deg); opacity: 0; }
 }
 
 #particles {
@@ -215,20 +217,20 @@ body {
 
 .holofote.h-left {
     left: 0;
-    animation: holofoteLeft 4.2s ease-in-out infinite;
+    animation: holofoteLeft 1.15s ease-in-out infinite;
 }
 
 .holofote.h-center {
     left: 50%;
     width: 50%;
     margin-left: -25%;
-    animation: holofoteCenter 3.6s ease-in-out infinite;
+    animation: holofoteCenter 0.9s ease-in-out infinite;
 }
 
 .holofote.h-right {
     right: 0;
     left: auto;
-    animation: holofoteRight 4.8s ease-in-out infinite;
+    animation: holofoteRight 1.25s ease-in-out infinite;
 }
 
 .holofote-floor {
@@ -251,20 +253,23 @@ body {
 }
 
 @keyframes holofoteLeft {
-    0%, 100% { transform: rotate(-16deg); opacity: 0.55; }
-    50% { transform: rotate(-5deg); opacity: 1; }
+    0% { transform: rotate(-32deg); opacity: 0.45; }
+    40% { transform: rotate(14deg); opacity: 1; }
+    100% { transform: rotate(-18deg); opacity: 0.6; }
 }
 @keyframes holofoteRight {
-    0%, 100% { transform: rotate(16deg); opacity: 0.55; }
-    50% { transform: rotate(5deg); opacity: 1; }
+    0% { transform: rotate(30deg); opacity: 0.5; }
+    45% { transform: rotate(-16deg); opacity: 1; }
+    100% { transform: rotate(22deg); opacity: 0.55; }
 }
 @keyframes holofoteCenter {
-    0%, 100% { transform: rotate(-2deg) scaleX(0.94); opacity: 0.75; }
-    50% { transform: rotate(2deg) scaleX(1.08); opacity: 1; }
+    0% { transform: rotate(-14deg) scaleX(0.8); opacity: 0.55; }
+    50% { transform: rotate(16deg) scaleX(1.2); opacity: 1; }
+    100% { transform: rotate(-8deg) scaleX(0.9); opacity: 0.7; }
 }
 @keyframes floorPulse {
-    0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(0.94); }
-    50% { opacity: 0.95; transform: translateX(-50%) scale(1.08); }
+    0%, 100% { opacity: 0.4; transform: translateX(-50%) scale(0.86); }
+    50% { opacity: 1; transform: translateX(-50%) scale(1.16); }
 }
 
 .card-vencedor {

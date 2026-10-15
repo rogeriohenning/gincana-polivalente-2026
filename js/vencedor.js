@@ -33,20 +33,19 @@ let intervaloConfetes = null;
 function explodirConfetes(corPrincipal) {
     const container = document.getElementById("celebration-confetti");
     if (!container) return;
-    const cores = ["#ffffff", "#ffd700", "#ffe566", corPrincipal || "#ff1493"];
-    const total = window.matchMedia("(max-width: 600px)").matches ? 28 : 46;
+    const cores = ["#ffffff", "#ffd700", corPrincipal || "#ffd700"];
+    const total = window.matchMedia("(max-width: 600px)").matches ? 10 : 16;
     for (let i = 0; i < total; i++) {
         const c = document.createElement("div");
         c.className = "confetti";
         c.style.backgroundColor = cores[Math.floor(Math.random() * cores.length)];
-        c.style.left = (8 + Math.random() * 84) + "vw";
-        c.style.animationDelay = (-Math.random() * 3.2) + "s";
-        c.style.animationDuration = (2.4 + Math.random() * 2.2) + "s";
-        c.style.width = (7 + Math.random() * 7) + "px";
-        c.style.height = (12 + Math.random() * 10) + "px";
+        c.style.left = (12 + Math.random() * 76) + "vw";
+        c.style.animationDelay = (-Math.random() * 4.8) + "s";
+        c.style.animationDuration = (4.2 + Math.random() * 2.4) + "s";
+        c.style.opacity = String(0.28 + Math.random() * 0.28);
         container.appendChild(c);
     }
-    while (container.children.length > 160) {
+    while (container.children.length > 24) {
         container.removeChild(container.firstChild);
     }
 }
@@ -54,7 +53,7 @@ function explodirConfetes(corPrincipal) {
 function iniciarFestas(cor) {
     explodirConfetes(cor);
     if (!intervaloConfetes) {
-        intervaloConfetes = setInterval(() => explodirConfetes(cor), 1800);
+        intervaloConfetes = setInterval(() => explodirConfetes(cor), 7000);
     }
 }
 
