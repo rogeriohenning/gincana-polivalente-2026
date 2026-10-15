@@ -640,6 +640,45 @@ body {
         </footer>
     </div>
 
+    <script>
+        (function () {
+            var API = "https://script.google.com/macros/s/AKfycbz_0gvcm3wappagqtJORfKG8PXzHxWWKorZnnhTHAnd6N8eUp5b4dWOAGyRJmvbg71BzA/exec";
+            var CORES = { Vermelho: "#ff0000", Azul: "#00bfff", Roxo: "#9d00ff", Amarela: "#ffd700", Laranja: "#ff8c00", Rosa: "#ff1493" };
+            var el = document.getElementById("conteudo-vencedor");
+            function escudo(cor) {
+                return '<svg class="escudo-svg" viewBox="0 0 24 24" width="28" height="28" fill="' + cor + '"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path></svg>';
+            }
+            fetch(API + "?t=" + Date.now()).then(function (resposta) {
+                if (!resposta.ok) throw new Error("api");
+                return resposta.json();
+            }).then(function (dados) {
+                if (window.__vencedorPronto) return;
+                var equipes = dados.map(function (item) {
+                    return {
+                        nome: String(item.nome || item.Nome || "").trim(),
+                        pontos: Number(item.pontos || item.Pontos) || 0
+                    };
+                }).filter(function (item) { return item.nome; })
+                  .sort(function (a, b) { return b.pontos - a.pontos; });
+                if (!equipes.length) throw new Error("vazio");
+                window.__vencedorPronto = true;
+                var principal = equipes[0];
+                var cor = CORES[principal.nome] || "#ffd700";
+                document.documentElement.style.setProperty("--team-color", cor);
+                var trofeus = { 2: "img/prata.png", 3: "img/bronze.png" };
+                var demais = equipes.slice(1).map(function (equipe, indice) {
+                    var pos = indice + 2;
+                    var corEquipe = CORES[equipe.nome] || "#aaaaaa";
+                    var foto = trofeus[pos] ? '<img src="' + trofeus[pos] + '" class="rank-trofeu" alt="">' : "";
+                    return '<article class="rank-row' + (pos <= 3 ? " rank-top-" + pos : "") + '" style="--team-color:' + corEquipe + '"><span class="rank-pos">' + pos + 'º</span>' + foto + '<span class="rank-nome">' + escudo(corEquipe) + "<span>" + equipe.nome + '</span></span><span class="rank-pontos">' + equipe.pontos + "</span></article>";
+                }).join("");
+                el.innerHTML = '<div class="layout-vencedor" style="--team-color:' + cor + '"><h1 class="titulo-parabens">Parabéns!</h1><p class="subtitulo-parabens">A equipe campeã da Gincana 50 Anos</p><div class="winner-stage"><div class="card-vencedor"><div class="coroa-grande">👑</div><img src="img/ouro.png" class="trofeu-vencedor" alt="Troféu de ouro"><div class="nome-vencedor">' + escudo(cor) + "<span>" + principal.nome + '</span></div><div class="pontos-vencedor">' + principal.pontos + ' pontos</div><p class="mensagem-vencedor">Vocês foram incríveis. O Colégio Polivalente celebra essa vitória!</p></div></div>' + (demais ? '<section class="ranking-bloco" aria-label="Demais equipes"><h2 class="ranking-titulo">Demais colocações</h2><div class="ranking-lista">' + demais + "</div></section>" : "") + "</div>";
+            }).catch(function () {
+                if (window.__vencedorPronto) return;
+                el.innerHTML = '<p class="erro-msg">Não foi possível carregar o resultado. Verifique a conexão.</p>';
+            });
+        })();
+    </script>
     <script src="js/config.js"></script>
     <script src="js/equipes.js"></script>
     <script src="js/vencedor.js"></script>
